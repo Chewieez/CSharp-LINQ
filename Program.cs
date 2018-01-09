@@ -6,6 +6,7 @@ namespace linq
 {
     class Program
     {
+
         static void Main(string[] args)
         {
             // Find the words in the collection that start with the letter 'L'
@@ -101,8 +102,8 @@ namespace linq
             double totalPurchases = purchases.Sum();
 
             Console.WriteLine($"The total amount is ${totalPurchases}");
-        
-        
+
+
             Console.WriteLine();
 
 
@@ -115,6 +116,156 @@ namespace linq
             double mostExpensiveItem = prices.Max();
 
             Console.WriteLine($"The most expensive item is ${mostExpensiveItem}");
+
+
+            List<int> wheresSquaredo = new List<int>()
+            {
+                66, 12, 8, 27, 82, 34, 7, 50, 19, 46, 81, 23, 30, 4, 68, 14
+            };
+
+            // method using linq
+            IEnumerable<int> noSquareRoots = wheresSquaredo.TakeWhile(num => Math.Sqrt(num) % 1 != 0);
+            noSquareRoots.ToList().ForEach(num => Console.Write(num + ", "));
+
+
+            // verbose method that doesn't use Linq
+            // List<int> noSquareRoots = new List<int>();
+
+            // for (int i; i < wheresSquaredo.Count; i++ ) {
+            //     if (Math.Sqrt(wheresSquaredo[i])%1 != 0) {
+            //         noSquareRoots.Add(wheresSquaredo[i]);
+            //     } else {
+            //         break;
+            //     }
+            // } 
+
+            Console.WriteLine();
+
+
+
+            // List<Customer> customers = new List<Customer>() {
+            //     new Customer(){ Name="Bob Lesman", Balance=80345.66, Bank="FTB"},
+            //     new Customer(){ Name="Joe Landy", Balance=9284756.21, Bank="WF"},
+            //     new Customer(){ Name="Meg Ford", Balance=487233.01, Bank="BOA"},
+            //     new Customer(){ Name="Peg Vale", Balance=7001449.92, Bank="BOA"},
+            //     new Customer(){ Name="Mike Johnson", Balance=790872.12, Bank="WF"},
+            //     new Customer(){ Name="Les Paul", Balance=8374892.54, Bank="WF"},
+            //     new Customer(){ Name="Sid Crosby", Balance=957436.39, Bank="FTB"},
+            //     new Customer(){ Name="Sarah Ng", Balance=56562389.85, Bank="FTB"},
+            //     new Customer(){ Name="Tina Fey", Balance=1000000.00, Bank="CITI"},
+            //     new Customer(){ Name="Sid Brown", Balance=49582.68, Bank="CITI"}
+            // };
+
+
+            // List<Customer> millionaires = customers.Where(c => c.Balance >= 100000).ToList();
+
+
+            // /*
+            //     Given the same customer set, display how many millionaires per bank.
+            //     Ref: https://stackoverflow.com/questions/7325278/group-by-in-linq
+
+            //     Example Output:
+            //     WF 2
+            //     BOA 1
+            //     FTB 1
+            //     CITI 1
+            // */
+
+            // // millionaires.OrderBy()
+            // Console.WriteLine();
+
+
+            // var results = from cust in customers
+            //               group cust.Name by cust.Bank into grp
+            //               select new
+            //               {
+            //                   Bank =
+            //                   grp.Key,
+            //                   Customers = grp.ToList()
+            //               };
+
+            // results.ToList();
+
+            // foreach (var result in results)
+            // {
+            //     Console.WriteLine($"{result.Bank} has {result.Customers.Count} millionaires");
+            // }
+
+
+            // Steve's code example
+            //  var groupedMillionaires = from customer in millionaires
+            //         group customer by customer.Bank into millionaireGroup
+            //         select new {
+            //             Bank = millionaireGroup.Key,
+            //             NumberOfMillionaires = millionaireGroup.Count()
+            //         };
+
+            /*
+    TASK:
+    As in the previous exercise, you're going to output the millionaires,
+    but you will also display the full name of the bank. You also need
+    to sort the millionaires' names, ascending by their LAST name.
+
+    Example output:
+        Tina Fey at Citibank
+        Joe Landy at Wells Fargo
+        Sarah Ng at First Tennessee
+        Les Paul at Wells Fargo
+        Peg Vale at Bank of America
+*/
+
+
+
+
+            // Create some banks and store in a List
+            List<Bank> banks = new List<Bank>() {
+            new Bank(){ Name="First Tennessee", Symbol="FTB"},
+            new Bank(){ Name="Wells Fargo", Symbol="WF"},
+            new Bank(){ Name="Bank of America", Symbol="BOA"},
+            new Bank(){ Name="Citibank", Symbol="CITI"},
+            };
+
+            // Create some customers and store in a List
+            List<Customer> customers = new List<Customer>() {
+            new Customer(){ Name="Bob Lesman", Balance=80345.66, Bank="FTB"},
+            new Customer(){ Name="Joe Landy", Balance=9284756.21, Bank="WF"},
+            new Customer(){ Name="Meg Ford", Balance=487233.01, Bank="BOA"},
+            new Customer(){ Name="Peg Vale", Balance=7001449.92, Bank="BOA"},
+            new Customer(){ Name="Mike Johnson", Balance=790872.12, Bank="WF"},
+            new Customer(){ Name="Les Paul", Balance=8374892.54, Bank="WF"},
+            new Customer(){ Name="Sid Crosby", Balance=957436.39, Bank="FTB"},
+            new Customer(){ Name="Sarah Ng", Balance=56562389.85, Bank="FTB"},
+            new Customer(){ Name="Tina Fey", Balance=1000000.00, Bank="CITI"},
+            new Customer(){ Name="Sid Brown", Balance=49582.68, Bank="CITI"}
+            };
+
+            var millionaireReport = from bank in banks
+                                                join c in customers on bank.Symbol equals c.Bank into millGroup
+                                                select new { Bank = bank.Name, Name = millGroup };
+                                                
+            // var millionaireReport2 = from bank in banks
+            //                                     join c in customers on bank.Symbol equals c.Bank into millGroup
+            //                                     select new { millGroup };
+
+            Console.WriteLine("debugger");
+
+            millionaireReport.ToList().ForEach(cust => {
+                string bank = cust.Bank;
+
+                foreach (Customer customer in cust.Name) 
+                {
+                    Console.WriteLine($"{customer.Name} at {bank}");
+                }
+            });
+
+            
+            // foreach (Customer customer in millionaireReport)
+            // {
+            //     Console.WriteLine($"{customer.Name} at {customer.Bank}");
+            // }
+
+
+
 
         }
     }
