@@ -215,7 +215,7 @@ namespace linq
 */
 
 
-
+            Console.WriteLine();
 
             // Create some banks and store in a List
             List<Bank> banks = new List<Bank>() {
@@ -240,25 +240,25 @@ namespace linq
             };
 
             var millionaireReport = from bank in banks
-                                                join c in customers on bank.Symbol equals c.Bank into millGroup
-                                                select new { Bank = bank.Name, Name = millGroup };
+                                    join c in customers on bank.Symbol equals c.Bank
+                                    select new { Bank = bank.Name, Name = c.Name.Split(" ") };
                                                 
-            // var millionaireReport2 = from bank in banks
-            //                                     join c in customers on bank.Symbol equals c.Bank into millGroup
-            //                                     select new { millGroup };
 
-            Console.WriteLine("debugger");
-
-            millionaireReport.ToList().ForEach(cust => {
-                string bank = cust.Bank;
-
-                foreach (Customer customer in cust.Name) 
-                {
-                    Console.WriteLine($"{customer.Name} at {bank}");
-                }
+            millionaireReport.OrderBy(c => c.Name[1]).ToList().ForEach(c => {
+                Console.WriteLine($"{c.Name[0]} {c.Name[1]} at {c.Bank}");
             });
 
-            
+            // millionaireReport.ToList().ForEach(cust => {
+            //     string bank = cust.Bank;
+
+            //     foreach (Customer customer in cust.Name) 
+            //     {
+            //         Console.WriteLine($"{customer.Name} at {bank}");
+            //     }
+            // });
+
+        
+
             // foreach (Customer customer in millionaireReport)
             // {
             //     Console.WriteLine($"{customer.Name} at {customer.Bank}");
